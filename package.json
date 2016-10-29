@@ -1,0 +1,24 @@
+{
+  "name": "svent",
+  "version": "0.0.1",
+  "description": "Svent is an async event framework implemented with Fiber.Used for game or GUI event handling.",
+  "main": "lib/svent.js",
+  "keywords": [
+    "svent",
+    "async",
+    "event"
+  ],
+  "scripts": {
+    "build":"babel src -d lib",
+    "test": "make test"
+  },
+  "author": "shitake",
+  "license": "MIT",
+  "dependencies": {
+    "fibers": "1.0.15"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.0.0",
+    "mocha": "3.1.2"
+  }
+}
