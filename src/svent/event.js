@@ -8,9 +8,4 @@ export default class Event extends Array {
         this.name = name;
         this.genre = genre;
     }
-
-    delete(obj) {
-        let index = self.indexOf(obj);
-        self.splice(index, 1)
-    }
 }

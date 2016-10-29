@@ -5,8 +5,9 @@
 import EventManger from './svent/eventManger'
 
 const Svent = {
+    EventManger: EventManger,
     run: function (eventManger, func) {
-        this.eventManger = eventManger || new EventManger();
+        this.eventManger = eventManger || new this.EventManger();
         this.isStop = false;
         func(this.eventManger);
         while(!this.isStop) {

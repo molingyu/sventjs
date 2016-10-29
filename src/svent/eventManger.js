@@ -2,7 +2,7 @@
  * Created by shitake on 16-10-26.
  */
 import Event from './event'
-import EventCallbackFiber from './EventCallbackFiber'
+import EventCallbackFiber from './eventCallbackFiber'
 import Fiber from 'fibers'
 
 export default class EventManger {
@@ -67,7 +67,9 @@ export default class EventManger {
     }
 
     afterDelete() {
-        this.events[this.self.name].delete(this.self.callback)
+        let event = this.events[this.self.name];
+        let index = event.indexOf(this.self.callback);
+        event.splice(index, 1)
     }
 
     isOk(callback) {
@@ -78,7 +80,7 @@ export default class EventManger {
     }
 
     filter(callback) {
-        if(!callback) Fiber.yield(true)
+        if(!callback()) Fiber.yield(true)
     }
 
     wait(value) {
@@ -91,14 +93,14 @@ export default class EventManger {
     }
 
     times(value) {
-        if (this.counters[this.self.objectId]) {
-            this.counters[this.self.objectId] += 1;
+        if (this.counters[this.self.name]) {
+            this.counters[this.self.name] += 1;
         } else {
-            this.counters[this.self.objectID] = 1;
+            this.counters[this.self.name] = 1;
         }
         while(true) {
-            if(this.counters[this.self.objectId] > value) {
-                this.counters.delete(this.self.objectId);
+            if(this.counters[this.self.name] >= value) {
+                this.counters[this.self.name] = 0;
                 break
             }
             Fiber.yield()
@@ -106,10 +108,10 @@ export default class EventManger {
     }
 
     waitFilter(value) {
-        if(!this.timerFilters[this.self.objectId]) return this.timerFilters[this.self.objectId] = Date.now();
+        if(!this.timerFilters[this.self.name]) this.timerFilters[this.self.name] = Date.now();
         while(true){
-            if(Date.now() - this.timerFilters[this.self.objectId] > value * 1000) {
-                this.timerFilters[this.self.objectId] = Date.now();
+            if(Date.now() - this.timerFilters[this.self.name] > value * 1000) {
+                this.timerFilters[this.self.name] = Date.now();
                 break
             }
             Fiber.yield(true)
@@ -117,14 +119,14 @@ export default class EventManger {
     }
 
     timesFilter(value) {
-        if( this.counterfilters[this.self.objectId]) {
-            this.counterfilters[this.self.objectId] += 1
+        if( this.counterfilters[this.self.name]) {
+            this.counterfilters[this.self.name] += 1
         } else {
-            return this.counterfilters[this.self.objectId] = 1
+            return this.counterfilters[this.self.name] = 1
         }
         while(true) {
-            if( this.counterfilters[this.self.objectId] > value) {
-                this.counterfilters[this.self.objectId] = 1;
+            if( this.counterfilters[this.self.name] > value) {
+                this.counterfilters[this.self.name] = 0;
                 break
             }
             Fiber.yield(true)
