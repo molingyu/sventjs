@@ -19,7 +19,7 @@ while( !isStop ) {
   em.update()
 }
 
-// out put
+// doc put
 // 5次 trigger 产生一次有效消费
 /*
  EventManger#waitFilter start!

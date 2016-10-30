@@ -22,7 +22,7 @@ Svent.run(null, function (em) {
   em.trigger('main')
 });
 
-// out put
+// doc put
 /*
  EventManger#filter(false) start!
  EventManger#filter(true) start!

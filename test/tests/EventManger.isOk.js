@@ -13,7 +13,7 @@ Svent.run(null, function (em) {
   em.trigger('main')
 });
 
-// out put
+// doc put
 // 更好例子，请浏览Svent#stop的实现。
 /*
  EventManger#filter(true) start!

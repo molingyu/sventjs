@@ -11,7 +11,7 @@ Svent.run(null, function (em) {
   em.trigger('main')
 });
 
-// out put
+// doc put
 /*
  EventManger#wait start!
  wait 1 sec!

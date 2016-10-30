@@ -13,7 +13,7 @@ Svent.run(em, function (em) {
   em.trigger('main')
 });
 
-// out put
+// doc put
 /*
  Svent start!
  */

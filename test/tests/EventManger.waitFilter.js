@@ -21,7 +21,7 @@ while( !isStop ) {
   em.update()
 }
 
-// out put
+// doc put
 // 打印五次，每次间隔一秒
 /*
  EventManger#waitFilter start!

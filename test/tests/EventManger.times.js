@@ -12,7 +12,7 @@ Svent.run(null, function (em) {
   em.trigger('main')
 });
 
-// out put
+// doc put
 // 每隔两次产生一次有效调用。
 /*
  EventManger#wait start!

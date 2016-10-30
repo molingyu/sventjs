@@ -2,8 +2,12 @@
  * Created by shitake on 16-10-26.
  */
 import Fiber from 'fibers'
-
-export default class EventCallbackFiber {
+/**
+ * Class EventCallbackFiber.
+ * @author shitake <z1522716486@hotmail.com>
+ * @license MIT <https://mit-license.org/>
+ */
+class EventCallbackFiber {
     constructor(em, name, callback, info) {
         this.objectId = Date.now().toString();
         this.name = name;
@@ -30,6 +34,6 @@ export default class EventCallbackFiber {
     isAlive() {
         return this.fiber != null
     }
-
-
 }
+
+export default EventCallbackFiber
