@@ -13,11 +13,14 @@ class EventCallbackFiber {
         this.name = name;
         this.info = info;
         this.callback = callback;
+        this.alive = true;
         let self = this;
         this.fiber = new Fiber(()=>{
             self.callback(em, self.info);
-            self.fiber = null
-        })
+            self.fiber = null;
+            this.alive = false
+        });
+        if(callback.immediately) this.next()
     }
 
     next() {
@@ -25,14 +28,11 @@ class EventCallbackFiber {
             return console.error(`Fiber(${this.name}) is not alive!`)
         }
         if(this.return) {
-            this.fiber = null
+            this.fiber = null;
+            this.alive = false
         } else {
             this.return = this.fiber.run()
         }
-    }
-
-    isAlive() {
-        return this.fiber != null
     }
 }
 

@@ -9,10 +9,10 @@
  * @license MIT <https://mit-license.org/>
  */
 class Event extends Array {
-    constructor(name, genre) {
+    constructor(name, info) {
         super();
         this.name = name;
-        this.genre = genre;
+        this.info = info;
     }
 }
 

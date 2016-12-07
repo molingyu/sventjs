@@ -16,8 +16,10 @@ class EventManger {
      */
     constructor() {
         this.events = new Map();
-        this.self = null;
         this.eventCallbackFibers = [];
+        this.eventCallbackFibers.delete = function (obj) {
+            this.splice(this.indexOf(obj), 1)
+        };
         this.timers = new Map();
         this.counters = new Map();
         this.timerFilters = new Map();
@@ -33,7 +35,7 @@ class EventManger {
                 this.self = obj;
                 obj.next();
                 this.self = null;
-                if(!obj.isAlive()) this.eventCallbackFibers.splice(this.eventCallbackFibers.indexOf(obj), 1)
+                if(!obj.alive) this.eventCallbackFibers.delete(obj)
             })
         }
     }
@@ -43,13 +45,60 @@ class EventManger {
      * @param {String} name - The event name.
      * @param {Object} info - The event info.
      */
-    trigger(name, info) {
+    trigger(name, info = {}) {
         let event = this.events[name];
         if(event) {
             event.map(callback => {
-                this.eventCallbackFibers.push(new EventCallbackFiber(this, name, callback, info))
+                if(callback.async) {
+                    this.eventCallbackFibers.push(new EventCallbackFiber(this, name, callback, info))
+                } else {
+                    this.eventCallbackFibers.push(callback)
+                }
             })
         }
+    }
+
+    /**
+     * change event info.
+     * @param name - event name.
+     * @param key - event info key.
+     * @param value event info value.
+     */
+    eventInfo(name, key, value) {
+        let event = this.events[name];
+        if(event) {
+            event.info[key] = value
+        }
+    }
+
+    /**
+     * Whether to include the specified event.
+     * @param name
+     * @returns {boolean}
+     */
+    have(name) {
+        return this.events[name] != void 0
+    }
+
+    _on(name, conf, callback, immediately) {
+        if(name == 'isEventMangerStop'){
+            Error("error:The event(isEventMangerStop) can only have one callback.")
+        }
+        let event = this.events[name] = this.events[name] ? this.events[name] : new Event(name, conf.info);
+        callback.immediately = immediately;
+        conf.index == void 0 ? event.push(callback) : event[index] = callback
+    }
+
+    /**
+     * on a async event callback.
+     * @param {String} name - The event name.
+     * @param {Object} conf - The event callback conf.
+     * @param {EventManger~eventCallback} callback - The event callback.
+     * @param {Boolean} immediately
+     */
+    onAsync(name, conf, callback, immediately = false) {
+        callback.async = true;
+        this._on(name, conf, callback, immediately)
     }
 
     /**
@@ -57,18 +106,18 @@ class EventManger {
      * @param {String} name - The event name.
      * @param {Object} conf - The event callback conf.
      * @param {EventManger~eventCallback} callback - The event callback.
+     * @param {Boolean} immediately
      */
-    on(name, conf, callback) {
-        if(typeof name == String) name = Symbol(name);
-        if(name == Symbol.for('isEventMangerStop')){
-            Error("error:The event(isEventMangerStop) can only have one callback.")
-        }
-        let event = this.events[name] = this.events[name] ? this.events[name] : new Event(name, conf.type);
-        if(conf.index == undefined) {
-            event.push(callback)
-        } else {
-            event[index] = callback
-        }
+    on(name, conf, callback, immediately = false) {
+        callback.async = false;
+        callback.name = name;
+        callback.info = conf.info;
+        callback.alive = true;
+        callback.next = function () {
+            callback.alive = false;
+            return this()
+        };
+        this._on(name, conf, callback, immediately)
     }
     /**
      * This eventCallback is added a event event.
@@ -95,6 +144,37 @@ class EventManger {
     // helper function
 
     /**
+     * kill the designated event callback.
+     * @param {String|RegExp} name - The event name. It can be a regexp(exact match).
+     */
+    killEventCallback(name) {
+        if(typeof name == "string") {
+            this.eventCallbackFibers.forEach((obj)=>{
+                if(obj.name == name) this.eventCallbackFibers.delete(obj)
+            })
+        } else {
+            this.eventCallbackFibers.forEach((obj)=>{
+                if(obj.name.match(name) == obj.name) this.eventCallbackFibers.delete(obj)
+            })
+        }
+    }
+
+    /**
+     * if the event callback is running, it returns true.
+     * @param {String|RegExp} name - The event name. It can be a regexp(exact match).
+     * @returns {boolean}
+     */
+    isEventCallbackRun(name) {
+        let back = false;
+        if(typeof name == "string") {
+            this.eventCallbackFibers.forEach((obj)=>{if(obj.name == name) return back = true})
+        } else {
+            this.eventCallbackFibers.forEach((obj)=>{if(obj.name.match(name) == obj.name) return back = true})
+        }
+        return back
+    }
+
+    /**
      * Helper methods.<br>
      * Delete this callback.
      */
@@ -115,7 +195,7 @@ class EventManger {
 
     /**
      * Helper methods.<br>
-     * isok.
+     * isOk.
      * @param {EventManger~isOkCallback} callback
      */
     isOk(callback) {
@@ -149,7 +229,7 @@ class EventManger {
      * @param {Number} value - sec.
      */
     wait(value) {
-        if(this.timers[this.self.objectId] == undefined) this.timers[this.self.objectId] = Date.now();
+        if(this.timers[this.self.objectId] == void 0) this.timers[this.self.objectId] = Date.now();
         while(true) {
             if(Date.now() - this.timers[this.self.objectId] > value * 1000) break;
             Fiber.yield()
