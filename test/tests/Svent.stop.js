@@ -3,13 +3,13 @@ var Svent = require('../../lib/svent.js');
 em = new Svent.EventManger();
 
 Svent.run(em, function (em) {
-  em.on('main', {}, function (em) {
+  em.onAsync('main', {}, function (em) {
     console.log('Svent#stop start!');
     em.trigger('stop', "Stop Svent!");
     console.log('stop!');
   });
 
-  em.on('stop', {}, (_, data)=>{
+  em.onAsync('stop', {}, (_, data)=>{
     Svent.stop();
     console.log(data)
   });

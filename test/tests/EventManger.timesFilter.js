@@ -4,7 +4,7 @@ var em = new EventManger();
 
 var isStop = false;
 
-em.on('main', {}, function (em) {
+em.onAsync('main', {}, function (em) {
   console.log('EventManger#waitFilter start!');
   em.timesFilter(5);
   console.log('timesFilter 10');

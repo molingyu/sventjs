@@ -52,7 +52,21 @@ class EventManger {
                 if(callback.async) {
                     this.eventCallbackFibers.push(new EventCallbackFiber(this, name, callback, info))
                 } else {
-                    this.eventCallbackFibers.push(callback)
+                    if(callback.immediately){
+                        callback(this, info)
+                    } else {
+                        let callbackFiber = {
+                            name: name,
+                            info: info,
+                            alive: true,
+                            callback: callback,
+                            next: function () {
+                                callback(this, this.info);
+                                this.alive = false
+                            }
+                        };
+                        this.eventCallbackFibers.push(callbackFiber)
+                    }
                 }
             })
         }
@@ -67,6 +81,7 @@ class EventManger {
     eventInfo(name, key, value) {
         let event = this.events[name];
         if(event) {
+            event.info = event.info || {};
             event.info[key] = value
         }
     }
@@ -110,13 +125,6 @@ class EventManger {
      */
     on(name, conf, callback, immediately = false) {
         callback.async = false;
-        callback.name = name;
-        callback.info = conf.info;
-        callback.alive = true;
-        callback.next = function () {
-            callback.alive = false;
-            return this()
-        };
         this._on(name, conf, callback, immediately)
     }
     /**

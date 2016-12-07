@@ -1,7 +1,7 @@
 var Svent = require('../../lib/svent.js');
 
 Svent.run(null, function (em) {
-  em.on('main', {}, function (em) {
+  em.onAsync('main', {}, function (em) {
     Svent.stop();
     console.log('EventManger#filter(false) start!');
     em.filter(()=>{ return false });
@@ -12,7 +12,7 @@ Svent.run(null, function (em) {
 });
 
 Svent.run(null, function (em) {
-  em.on('main', {}, function (em) {
+  em.onAsync('main', {}, function (em) {
     Svent.stop();
     console.log('EventManger#filter(true) start!');
     em.filter(()=>{ return true });

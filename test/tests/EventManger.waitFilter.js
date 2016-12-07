@@ -6,7 +6,7 @@ var isStop = false;
 
 console.log('EventManger#waitFilter start!');
 
-em.on('main', {}, function (em) {
+em.onAsync('main', {}, function (em) {
   em.waitFilter(1);
   console.log('waitFilter 1 sec!');
   em.times(3);
@@ -22,11 +22,9 @@ while( !isStop ) {
 }
 
 // doc put
-// 打印五次，每次间隔一秒
+// 打印3次，每次间隔一秒
 /*
  EventManger#waitFilter start!
- waitFilter 1 sec!
- waitFilter 1 sec!
  waitFilter 1 sec!
  waitFilter 1 sec!
  waitFilter 1 sec!

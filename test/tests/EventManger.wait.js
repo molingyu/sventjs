@@ -1,7 +1,7 @@
 var Svent = require('../../lib/svent.js');
 
 Svent.run(null, function (em) {
-  em.on('main', {}, function (em) {
+  em.onAsync('main', {}, function (em) {
     Svent.stop();
     console.log('EventManger#wait start!');
     em.wait(1);

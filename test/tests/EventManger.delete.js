@@ -3,7 +3,7 @@ var Svent = require('../../lib/svent.js');
 em = new Svent.EventManger();
 
 Svent.run(em, function (em) {
-  em.on('main', {}, function (em) {
+  em.onAsync('main', {}, function (em) {
     Svent.stop();
     console.log('EventManger#delete start!');
     em.delete();
@@ -15,5 +15,5 @@ Svent.run(em, function (em) {
 
 // doc put
 /*
- Svent start!
+ EventManger#delete start!
  */

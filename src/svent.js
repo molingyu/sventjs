@@ -27,7 +27,7 @@ const Svent = {
      * @description Stop Svent server.
      */
     stop: function () {
-        this.eventManger.on('isEventMangerStop', {}, (em)=>{
+        this.eventManger.onAsync('isEventMangerStop', {}, (em)=>{
             em.isOk(()=>{ return em.isStop() });
             this.isStop = true
         });

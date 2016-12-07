@@ -20,7 +20,11 @@ class EventCallbackFiber {
             self.fiber = null;
             this.alive = false
         });
-        if(callback.immediately) this.next()
+        if(callback.immediately) {
+            em.self = this;
+            this.next();
+            em.self = null
+        }
     }
 
     next() {
