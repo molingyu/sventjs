@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "build":"babel src -d lib",
-    "test": "make test"
+    "test": "make test",
+    "doc": "jsdoc src/svent/ src -d doc"
   },
   "author": "shitake",
   "license": "MIT",
