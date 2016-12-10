@@ -101,7 +101,7 @@ class EventManger {
         }
         let event = this.events[name] = this.events[name] ? this.events[name] : new Event(name, conf.info);
         callback.immediately = immediately;
-        conf.index == void 0 ? event.push(callback) : event[index] = callback
+        conf.index == void 0 ? event.push(callback) : event[conf.index] = callback
     }
 
     /**
