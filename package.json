@@ -12,16 +12,21 @@
     "clean": "rm -rf lib",
     "build": "npm run clean &&babel src -d lib",
     "test": "npm run build && node test/runner.js",
-    "docs": "jsdoc src/svent/ src -d doc"
+    "docs": "jsdoc src/svent/ src -R readme.md -d docs"
   },
-  "author": "shitake",
+  "author": "shitake <z1522716486@hotmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/molingyu/sventjs.git"
+  },
   "dependencies": {
     "fibers": "1.0.15"
   },
   "devDependencies": {
     "babel-cli": "^6.0.0",
     "babel-preset-es2015": "^6.24.1",
-    "colors": "1.1.2"
+    "colors": "1.1.2",
+    "jsdoc": "^3.5.5"
   }
 }
