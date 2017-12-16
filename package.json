@@ -9,8 +9,9 @@
     "event"
   ],
   "scripts": {
-    "build":"babel src -d lib",
-    "test": "make test",
+    "clean": "rm -rf lib",
+    "build": "npm run clean &&babel src -d lib",
+    "test": "npm run build && node test/runner.js",
     "docs": "jsdoc src/svent/ src -d doc"
   },
   "author": "shitake",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.0.0",
+    "babel-preset-es2015": "^6.24.1",
     "colors": "1.1.2"
   }
 }

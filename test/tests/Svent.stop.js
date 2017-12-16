@@ -1,17 +1,17 @@
 var Svent = require('../../lib/svent.js');
 
-em = new Svent.EventManger();
+em = new Svent.EventManager();
 
 Svent.run(em, function (em) {
   em.onAsync('main', {}, function (em) {
-    console.log('Svent#stop start!');
+    print('Svent#stop start!');
     em.trigger('stop', "Stop Svent!");
-    console.log('stop!');
+    print('stop!');
   });
 
   em.onAsync('stop', {}, (_, data)=>{
     Svent.stop();
-    console.log(data)
+    print(data)
   });
 
   em.trigger('main')

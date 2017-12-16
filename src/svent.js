@@ -1,25 +1,25 @@
 /**
  * Created by shitake on 16-10-26.
  */
-import EventManger from './svent/eventManger'
+import EventManager from './svent/eventManager'
 
 /**
  * @module Svent
  */
 const Svent = {
-    EventManger: EventManger,
+    EventManager: EventManager,
     /**
      * @method run
      * @description Run a Svent server.
-     * @param {EventManger} eventManger a EventManger object.
+     * @param {EventManager} eventManager a EventManager object.
      * @param {Function} func callback func.
      */
-    run: function (eventManger, func) {
-        this.eventManger = eventManger || new this.EventManger();
+    run: function (eventManager, func) {
+        this.eventManager = eventManager || new this.EventManager();
         this.isStop = false;
-        func(this.eventManger);
+        func(this.eventManager);
         while(!this.isStop) {
-            this.eventManger.update()
+            this.eventManager.update()
         }
     },
     /**
@@ -27,11 +27,11 @@ const Svent = {
      * @description Stop Svent server.
      */
     stop: function () {
-        this.eventManger.onAsync('isEventMangerStop', {}, (em)=>{
+        this.eventManager.onAsync('isEventManagerStop', {}, (em)=>{
             em.isOk(()=>{ return em.isStop() });
             this.isStop = true
         });
-        this.eventManger.stop()
+        this.eventManager.stop()
     },
     /**
      * @method kill
