@@ -1,0 +1,15 @@
+# node.js & npm
+/node_modules
+npm-debug.log
+package-lock.json
+
+#ci
+/coverage
+
+# editor
+.vscode
+.idea
+.vs
+
+# dist
+lib
