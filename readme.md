@@ -1,4 +1,5 @@
 # Svent
+[![CircleCI](https://circleci.com/gh/molingyu/sventjs/tree/master.svg?style=svg)](https://circleci.com/gh/molingyu/sventjs/tree/master)
 
 Svent is an async event framework implemented with Fiber.Used for game or GUI event handling.
 
